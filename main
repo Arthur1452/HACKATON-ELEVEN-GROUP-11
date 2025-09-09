@@ -1,4 +1,5 @@
 
-
-import pandas as pd
+set = pd.read_csv("waiting_times_train.csv")
+meteo = pd.read_csv("weather_data.csv")
+train_set = set.merge(meteo, on= "DATETIME", how = "left")
 
