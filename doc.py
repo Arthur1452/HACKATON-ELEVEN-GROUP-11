@@ -60,5 +60,3 @@ output = pd.DataFrame({
     'KEY': 'Validation'
 })
 
-# Sauvegarde
-output.to_csv("predictions_validation.csv", index=False)

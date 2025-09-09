@@ -2,12 +2,11 @@ import numpy as np
 import pandas as pd 
 import seaborn as sns 
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, KFold, cross_val_score, GridSearchCV
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 data = pd.read_csv("C:/Users/ouzen/Documents/HACKATON-ELEVEN-GROUP-11/waiting_times_train.csv", sep=",")
-
 
 
 data['DATETIME'] = pd.to_datetime(data['DATETIME'])
@@ -18,14 +17,11 @@ data['month'] = data['DATETIME'].dt.month
 data = data.drop(columns=['TIME_TO_PARADE_2']).copy()
 data = pd.get_dummies(data, columns=['ENTITY_DESCRIPTION_SHORT'])
 
-
-
 X = data.drop(columns=['DATETIME', 'WAIT_TIME_IN_2H']).copy()
 y = data['WAIT_TIME_IN_2H']
 
 
 # Supprimer la colonne inutilisable
-
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
@@ -68,6 +64,5 @@ sns.scatterplot(x=y_test, y=y_pred_lr, alpha=0.3, color='orange')
 plt.xlabel("Temps d'attente réel")
 plt.ylabel("Temps d'attente prédit")
 plt.title("LinearRegression : prédictions vs réel")
-
 plt.tight_layout()
 plt.show()
