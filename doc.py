@@ -10,10 +10,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 data=pd.read_csv("C:/Users/ouzen/Documents/HACKATON-ELEVEN-GROUP-11/waiting_times_train.csv", sep=",")
 
-
 data['DATETIME'] = pd.to_datetime(data['DATETIME'])
-
-
 
 data['hour'] = data['DATETIME'].dt.hour
 data['dayofweek'] = data['DATETIME'].dt.dayofweek
@@ -50,8 +47,18 @@ for col in X.columns:
 
 X_val = data_val[X.columns]  # exactement les features du train
 
-model=RandomForestRegressor(n_estimators=100,random_state=42)
+best_params = {'max_depth': None, 'min_samples_split': 5, 'n_estimators': 200}
+rf_final = RandomForestRegressor(**best_params, random_state=42)
+rf_final.fit(X, y)
 
-model.fit(X, y)
+y_val_pred = rf_final.predict(X_val)
 
-y_pred=model.predcit(X)
+output = pd.DataFrame({
+    'DATETIME': data_val['DATETIME'],
+    'ENTITY_DESCRIPTION_SHORT': pd.read_csv("C:/Users/ouzen/Downloads/waiting_times_X_test_val.csv")['ENTITY_DESCRIPTION_SHORT'],
+    'WAIT_TIME_IN_2H': y_val_pred,
+    'KEY': 'Validation'
+})
+
+# Sauvegarde
+output.to_csv("predictions_validation.csv", index=False)
