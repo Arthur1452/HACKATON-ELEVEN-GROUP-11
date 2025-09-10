@@ -82,8 +82,8 @@ val['month_cos'] = np.cos(2 * np.pi * val['month'] / 12)
 
 entity_desc = val["ENTITY_DESCRIPTION_SHORT"]
 
-val = pd.get_dummies(val, columns=['ENTITY_DESCRIPTION_SHORT'])
-
+val = pd.get_dummies(val, columns=['ENTITY_DESCRIPTION_SHORT'],drop_first=False)
+val["ENTITY_DESCRIPTION_SHORT"] = entity_desc
 
 
 for col in [c for c in data.columns if c.startswith('ENTITY_DESCRIPTION_SHORT_')]:
@@ -269,56 +269,4 @@ data.head()
 
 data.to_csv("data.csv", index=False)
 
-
-from sklearn.model_selection import train_test_split
-
-
-X = data.drop(columns=['WAIT_TIME_IN_2H',"DATETIME","dayofweek","month","minute"])
-y = data['WAIT_TIME_IN_2H']
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
-
-from xgboost import XGBRegressor
-xgb_model = XGBRegressor(n_estimators=1000, learning_state=0.05,n_jobs=-1,random_state=42)
-
-
-xgb_model.fit(X, y, 
-             early_stopping_rounds=5, 
-             eval_set=[(X_valid, y_valid)], 
-             verbose=False)
-
-# param_grid = {
-#     'n_estimators':[500],
-#     'max_depth':[3,5,7,9],
-#     'learning_rate':[0.05,0.1,0.15],
-#     'subsample':[0.8,1.0]
-# }
-
-# grid_search = GridSearchCV(xgb_model,param_grid,cv=5,scoring='neg_mean_squared_error',n_jobs=-1)
-# grid_search.fit(X,y)
-# print("Meilleurs paramètres XGBoost :", grid_search.best_params_)
-
-
-
-# xgb_final_full = xgb.XGBRegressor(**grid_search.best_params_, objective='reg:squarederror', random_state=42)
-# xgb_final_full.fit(X, y)
-
-
-
-# Préparer X_test_val pour la prédiction
-X_test_val = val[X.columns]
-
-y_val_pred = xgb_final_full.predict(X_test_val)
-
-
-submission = pd.DataFrame({
-    'DATETIME': val['DATETIME'],
-    'ENTITY_DESCRIPTION_SHORT': entity_desc,
-    'y_pred': y_val_pred,
-    'KEY': 'Validation'
-})
-
-submission.to_csv('submission_validation.csv', index=False)
-# %%
+val.to_csv("val.csv", index=False)
