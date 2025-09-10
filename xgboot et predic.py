@@ -135,8 +135,9 @@ submission = pd.DataFrame({
     'DATETIME': test_val['DATETIME'],
     'ENTITY_DESCRIPTION_SHORT': test_val['ENTITY_DESCRIPTION_SHORT_orig'],
     'y_pred': y_val_pred,
-    'KEY': 'validation'
+    'KEY': 'Validation'
 })
 
-submission.to_csv("submission_validation_meteo.csv", index=False)
+submission.to_csv("C:/Users/ouzen/Documents/HACKATON-ELEVEN-GROUP-11/submission_validation_meteo.csv", index=False)
+
 print("CSV de validation avec météo généré !")
