@@ -31,7 +31,6 @@ bins = [0, 10, 14, 18, 24]
 labels = ['early','midday','afternoon','evening']
 data['hour_block'] = pd.cut(data['hour'], bins=bins, labels=labels, right=False)
 data = pd.get_dummies(data, columns=['hour_block'])
-
 data = pd.get_dummies(data, columns=['ENTITY_DESCRIPTION_SHORT'])
 data = data.drop(columns=['TIME_TO_PARADE_2']).copy()
 
@@ -70,12 +69,11 @@ for col in ['TIME_TO_PARADE_1','TIME_TO_NIGHT_SHOW']:
 xgb_model = xgb.XGBRegressor(objective='reg:squarederror', random_state=42)
 
 param_grid = {
-    'n_estimators':[100,200],
-    'max_depth':[5,7],
-    'learning_rate':[0.05,0.1],
+    'n_estimators':[100,120,140,159,200],
+    'max_depth':[5,7,3],
+    'learning_rate':[0.05, 0.08,0.1],
     'subsample':[0.8,1.0]
 }
-
 grid_search = GridSearchCV(xgb_model,param_grid,cv=5,scoring='neg_mean_squared_error',n_jobs=-1)
 grid_search.fit(X,y)
 print("Meilleurs paramètres XGBoost :", grid_search.best_params_)

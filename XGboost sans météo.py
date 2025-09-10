@@ -13,7 +13,6 @@ import xgboost as xgb
 # =======================
 data = pd.read_csv("C:/Users/ouzen/Documents/HACKATON-ELEVEN-GROUP-11/waiting_times_train.csv", sep=",")
 data['DATETIME'] = pd.to_datetime(data['DATETIME'])
-
 # Features temporelles
 data['hour'] = data['DATETIME'].dt.hour
 data['dayofweek'] = data['DATETIME'].dt.dayofweek
@@ -65,7 +64,6 @@ for col in ['TIME_TO_PARADE_1', 'TIME_TO_NIGHT_SHOW']:
     if col in X_train_full.columns:
         X_train_full[col] = X_train_full[col].fillna(0)
         X_val[col] = X_val[col].fillna(0)
-
 # =======================
 # 5️⃣ GridSearch XGBoost
 # =======================
