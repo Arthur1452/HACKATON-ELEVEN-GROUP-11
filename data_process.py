@@ -257,16 +257,54 @@ fillna_mapping = {
 
 }
 
-for col in fillna_mapping:
-    data[col] = data[col].fillna(fillna_mapping[col])
-    val[col] = val[col].fillna(fillna_mapping[col])
+# for col in fillna_mapping:
+#     data[col] = data[col].fillna(fillna_mapping[col])
+#     val[col] = val[col].fillna(fillna_mapping[col])
     
+col_missing = [   
+    'TIME_TO_PARADE_1',
+    'TIME_TO_PARADE_2',
+    'TIME_TO_NIGHT_SHOW',
+    'snow_1h'
+]
 
-data.columns.tolist()
+for col in col_missing:
+    if col in data.columns:
+        data[col + '_was_missing'] = data[col].isnull()
+    if col in val.columns:
+        val[col + '_was_missing'] = val[col].isnull()
 
+
+
+
+### on remplace les valeurs manquantes par la moyenne de leur colonne 
+
+
+# from sklearn.impute import SimpleImputer
+# my_imputer = SimpleImputer()
+# imputed_data = pd.DataFrame(my_imputer.fit_transform(data[col_missing]))
+# imputed_val = pd.DataFrame(my_imputer.transform(val[col_missing]))
+
+# # Imputation removed column names; put them back
+# imputed_data.columns = col_missing
+# imputed_val.columns = col_missing
+
+# for col in col_missing:
+#     data[col] = imputed_data[col]
+#     val[col] = imputed_val[col]
+
+
+### on remplace les valeurs manquantes de TIME_TO_PARADE par un temps très élevé (en minutes)
+
+const_time_to_parade = 60*16
+for col in col_missing:
+    data[col] = data[col].fillna(const_time_to_parade)
+    val[col] = val[col].fillna(const_time_to_parade)
 
 data.head()
 
 data.to_csv("data.csv", index=False)
 
 val.to_csv("val.csv", index=False)
+
+# %%
