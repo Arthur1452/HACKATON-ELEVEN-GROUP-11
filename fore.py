@@ -52,7 +52,6 @@ print("RMSE interne (LinearRegression):", rmse_lr)
 # 8️⃣ Visualisation des prédictions
 # =======================
 plt.figure(figsize=(12,5))
-
 plt.subplot(1,2,1)
 sns.scatterplot(x=y_test, y=y_pred_rf, alpha=0.3)
 plt.xlabel("Temps d'attente réel")
