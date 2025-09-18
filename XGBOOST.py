@@ -7,7 +7,9 @@ data = pd.read_csv('data.csv')
 val = pd.read_csv('val.csv')
 
 
-columns_dropped = ['WAIT_TIME_IN_2H',"DATETIME","dayofweek","month","minute","ENTITY_DESCRIPTION_SHORT"]
+columns_dropped = ['WAIT_TIME_IN_2H',"DATETIME","dayofweek","month","minute","ENTITY_DESCRIPTION_SHORT",
+                   'rain_in_2h', 
+                   ]
 target = 'WAIT_TIME_IN_2H'
 
 # X_train = data.drop(columns=columns_dropped)
@@ -29,6 +31,7 @@ xgb_model.fit(X_train, y_train,
              verbose=False)
 
 y_pred = xgb_model.predict(X_val)
+
 
 
 

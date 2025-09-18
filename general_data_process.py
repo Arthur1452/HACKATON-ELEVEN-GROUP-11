@@ -21,8 +21,6 @@ meteo = pd.read_csv("weather_data.csv")
 data = data.merge(meteo, on= "DATETIME", how = "left")
 data['DATETIME'] = pd.to_datetime(data['DATETIME'])
 
-weather = pd.read_csv("weather_data.csv", sep=",")
-weather['DATETIME'] = pd.to_datetime(weather['DATETIME'])
 
 data['minute'] = data['DATETIME'].dt.hour*60 + data['DATETIME'].dt.minute
 
@@ -53,12 +51,11 @@ data = pd.get_dummies(data, columns=['ENTITY_DESCRIPTION_SHORT'])
 
 
 val = pd.read_csv("waiting_times_X_test_val.csv", sep=",")
-meteo = pd.read_csv("weather_data.csv")
+
 val = val.merge(meteo, on= "DATETIME", how = "left")
 val['DATETIME'] = pd.to_datetime(val['DATETIME'])
 
-weather = pd.read_csv("weather_prediction_data.csv", sep=",")    #pd.read_csv("weather_data.csv", sep=",")
-weather['DATETIME'] = pd.to_datetime(weather['DATETIME'])
+
 
 val['dayofweek'] = val['DATETIME'].dt.dayofweek
 
